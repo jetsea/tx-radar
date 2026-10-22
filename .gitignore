@@ -1,0 +1,26 @@
+
+# Binary
+bin/
+txradar
+txradar.exe
+
+# Config (contains sensitive info)
+config.yaml
+.env
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# System
+.DS_Store
+Thumbs.db
+
+# Test
+*.test
+coverage.out
+
+# Docker
+*.log
