@@ -1,0 +1,66 @@
+ingestion:
+  rpc_urls:
+    - "${RPC_URL_INFURA}"
+    - "${RPC_URL_ALCHEMY}"
+  reconnect_wait_per_node: "2s"
+  reconnect_wait_all_nodes: "10s"
+  channel_buffer_size: 10000
+
+processor:
+  worker_count: 0            # 0 = 自动 NumCPU * 2
+  gas_stats:
+    window_size: 10000
+  dedup:
+    mode: "memory"           # memory or redis
+    ttl: "30m"
+    redis:
+      addr: "${REDIS_ADDR}"
+      password: "${REDIS_PASSWORD}"
+      db: 0
+  marker:
+    min_high_gas_gwei: 100
+    min_medium_gas_gwei: 30
+    min_high_value_eth: 100
+
+storage:
+  postgres:
+    dsn: "${POSTGRES_DSN}"
+    max_connections: 10
+  influx:
+    url: "${INFLUX_URL}"
+    token: "${INFLUX_TOKEN}"
+    org: "txradar-org"
+    bucket: "mempool"
+  batch:
+    max_size: 200
+    flush_interval: "1s"
+  retention:
+    postgres_days: 30
+
+observability:
+  log_level: "info"
+  log_format: "json"      # json 或 text
+  metrics_port: 9090
+  health_port: 8080
+  enable_pprof: true
+
+batch:
+  size: 100
+  flush_interval: "1s"
+
+relayer:
+  websocket:
+    enabled: true
+    min_level: "MEDIUM"
+    addr: ":8081"
+  webhook:
+    enabled: false
+    min_level: "LOW"
+    timeout: "5s"
+    max_retries: 3
+  mq:
+    enabled: false
+    min_level: "HIGH"
+    brokers:
+      - "${MQ_BROKER}"
+    topic: "txradar.high_value"

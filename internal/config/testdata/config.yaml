@@ -1,0 +1,60 @@
+ingestion:
+  rpc_urls:
+    - "wss://a.example/ws"
+    - "wss://b.example/ws"
+  reconnect_wait_per_node: "2s"
+  reconnect_wait_all_nodes: "10s"
+  channel_buffer_size: 10000
+
+processor:
+  worker_count: 4
+  gas_stats:
+    window_size: 10000
+  dedup:
+    mode: "memory"
+    ttl: "30m"
+    redis:
+      addr: "localhost:6379"
+      password: ""
+      db: 0
+  marker:
+    min_high_gas_gwei: 100
+    min_medium_gas_gwei: 30
+    min_high_value_eth: 100
+
+storage:
+  postgres:
+    dsn: "postgres://txradar:pass@postgres:5432/txradar"
+    max_connections: 10
+  influx:
+    url: "http://influxdb:8086"
+    token: "dev-token"
+    org: "txradar-org"
+    bucket: "mempool"
+  batch:
+    max_size: 200
+    flush_interval: "1s"
+
+observability:
+  log_level: "info"
+  log_format: "json"
+  metrics_port: 9090
+  health_port: 8080
+  enable_pprof: true
+
+relayer:
+  websocket:
+    enabled: true
+    min_level: "MEDIUM"
+    addr: ":8081"
+  webhook:
+    enabled: false
+    min_level: "LOW"
+    timeout: "5s"
+    max_retries: 3
+  mq:
+    enabled: false
+    min_level: "HIGH"
+    brokers:
+      - "localhost:9092"
+    topic: "txradar.high_value"
