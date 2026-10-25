@@ -100,8 +100,8 @@ func TestLoad_ParsesTestdataYAML(t *testing.T) {
 
 // string override test
 func TestLoad_EnvOverride(t *testing.T) {
-	t.Setenv("TXRADAR_PROCESSOR_DEDUP_MODE", "redis")
-	t.Setenv("TXRADAR_OBSERVABILITY_LOG_LEVEL", "debug")
+	t.Setenv("PROCESSOR_DEDUP_MODE", "redis")
+	t.Setenv("OBSERVABILITY_LOG_LEVEL", "debug")
 
 	cfg, err := Load(testdataConfigPath(t))
 	if err != nil {
@@ -118,7 +118,7 @@ func TestLoad_EnvOverride(t *testing.T) {
 
 // duration override test
 func TestLoad_EnvOverrideDuration(t *testing.T) {
-	t.Setenv("TXRADAR_INGESTION_RECONNECT_WAIT_PER_NODE", "5s")
+	t.Setenv("INGESTION_RECONNECT_WAIT_PER_NODE", "5s")
 
 	cfg, err := Load(testdataConfigPath(t))
 	if err != nil {
@@ -131,7 +131,7 @@ func TestLoad_EnvOverrideDuration(t *testing.T) {
 
 // int override test
 func TestLoad_EnvOverrideNestedInt(t *testing.T) {
-	t.Setenv("TXRADAR_PROCESSOR_DEDUP_REDIS_DB", "2")
+	t.Setenv("PROCESSOR_DEDUP_REDIS_DB", "2")
 
 	cfg, err := Load(testdataConfigPath(t))
 	if err != nil {

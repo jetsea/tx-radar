@@ -131,6 +131,18 @@ type MQConfig struct {
 	MinLevel string   `mapstructure:"min_level"` // minimum push level, e.g. "MEDIUM"
 }
 
+// deal with array fields
+func expandConfig(cfg *Config) {
+	// ingestion
+	for i := range cfg.Ingestion.RPCURLs {
+		cfg.Ingestion.RPCURLs[i] = os.ExpandEnv(cfg.Ingestion.RPCURLs[i])
+	}
+	// relayer.mq.brokers
+	for i := range cfg.Relayer.MQ.Brokers {
+		cfg.Relayer.MQ.Brokers[i] = os.ExpandEnv(cfg.Relayer.MQ.Brokers[i])
+	}
+}
+
 // ============================================================
 // Loading configuration
 // ============================================================
@@ -144,7 +156,7 @@ func Load(path string) (*Config, error) {
 	v.SetConfigType("yaml")
 
 	// Support environment variable overrides (e.g. TXRADAR_PROCESSOR_DEDUP_MODE=redis)
-	v.SetEnvPrefix("TXRADAR")
+	v.SetEnvPrefix("")
 	v.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 	v.AutomaticEnv()
 
@@ -156,6 +168,7 @@ func Load(path string) (*Config, error) {
 	if err := v.Unmarshal(&cfg); err != nil {
 		return nil, err
 	}
+	expandConfig(&cfg)
 
 	return &cfg, nil
 }

@@ -62,5 +62,5 @@ relayer:
     enabled: false
     min_level: "HIGH"
     brokers:
-      - "${MQ_BROKER}"
+      - "${MQ_BROKER_URL}"
     topic: "txradar.high_value"
