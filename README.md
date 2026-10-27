@@ -29,7 +29,7 @@ A high-performance Ethereum Mempool monitoring and transaction relaying system b
 
 ---
 
-## 🏗️ System Architecture
+## 🌐 System Architecture
 
 The system utilizes a modular pipeline design to ensure high cohesion and low coupling.
 
@@ -83,3 +83,15 @@ flowchart LR
     Influx -.->|Write QPS| Prom
     WS & WH & MQ -.->|Push Success Rate| Prom
 ```
+
+---
+
+## 🚀 Quick Start
+
+The project loads the `.env` file via `godotenv.Load()`, which resolves it relative to the **current working directory** of the process. Because the `.env` file is located in the project root, so you **must run the program from the project root** (`tx-radar` directory).
+
+- ✅ **Correct**: start from the project root with `go run ./cmd`.
+- ❌ **Wrong**: `cd` into the `cmd` subdirectory and run `go run .` — `godotenv.Load()` won't find the root `.env` then.
+
+> 💡 Tip: keep the `.env` file in the project root and fill it in by copying
+> the `.env.example` template before you start.
